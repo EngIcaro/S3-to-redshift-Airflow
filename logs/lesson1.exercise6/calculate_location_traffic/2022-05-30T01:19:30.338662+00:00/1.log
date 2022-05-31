@@ -1,0 +1,48 @@
+[2022-05-31 01:19:39,386] {taskinstance.py:1035} INFO - Dependencies all met for <TaskInstance: lesson1.exercise6.calculate_location_traffic manual__2022-05-31T01:19:30.338662+00:00 [queued]>
+[2022-05-31 01:19:39,401] {taskinstance.py:1035} INFO - Dependencies all met for <TaskInstance: lesson1.exercise6.calculate_location_traffic manual__2022-05-31T01:19:30.338662+00:00 [queued]>
+[2022-05-31 01:19:39,402] {taskinstance.py:1241} INFO - 
+--------------------------------------------------------------------------------
+[2022-05-31 01:19:39,402] {taskinstance.py:1242} INFO - Starting attempt 1 of 1
+[2022-05-31 01:19:39,402] {taskinstance.py:1243} INFO - 
+--------------------------------------------------------------------------------
+[2022-05-31 01:19:39,414] {taskinstance.py:1262} INFO - Executing <Task(PostgresOperator): calculate_location_traffic> on 2022-05-31 01:19:30.338662+00:00
+[2022-05-31 01:19:39,421] {standard_task_runner.py:76} INFO - Running: ['***', 'tasks', 'run', 'lesson1.exercise6', 'calculate_location_traffic', 'manual__2022-05-31T01:19:30.338662+00:00', '--job-id', '14', '--raw', '--subdir', 'DAGS_FOLDER/rocket_launches.py', '--cfg-path', '/tmp/tmpm_0fgw6r', '--error-file', '/tmp/tmpdtelf4bg']
+[2022-05-31 01:19:39,422] {standard_task_runner.py:77} INFO - Job 14: Subtask calculate_location_traffic
+[2022-05-31 01:19:39,418] {standard_task_runner.py:52} INFO - Started process 29235 to run task
+[2022-05-31 01:19:39,462] {logging_mixin.py:109} INFO - Running <TaskInstance: lesson1.exercise6.calculate_location_traffic manual__2022-05-31T01:19:30.338662+00:00 [running]> on host b6b47ea722e0
+[2022-05-31 01:19:39,505] {taskinstance.py:1414} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=lesson1.exercise6
+AIRFLOW_CTX_TASK_ID=calculate_location_traffic
+AIRFLOW_CTX_EXECUTION_DATE=2022-05-31T01:19:30.338662+00:00
+AIRFLOW_CTX_DAG_RUN_ID=manual__2022-05-31T01:19:30.338662+00:00
+[2022-05-31 01:19:39,520] {base.py:79} INFO - Using connection to: id: redshift. Host: redshift-cluster-1.ctwsihrera0y.us-west-2.redshift.amazonaws.com, Port: 5439, Schema: dev, Login: awsuser, Password: ***, extra: {}
+[2022-05-31 01:19:41,038] {dbapi.py:225} INFO - Running statement: 
+BEGIN;
+DROP TABLE IF EXISTS station_traffic;
+CREATE TABLE station_traffic AS
+SELECT
+    DISTINCT(t.from_station_id) AS station_id,
+    t.from_station_name AS station_name,
+    num_departures,
+    num_arrivals
+FROM trips t
+JOIN (
+    SELECT
+        from_station_id,
+        COUNT(from_station_id) AS num_departures
+    FROM trips
+    GROUP BY from_station_id
+) AS fs ON t.from_station_id = fs.from_station_id
+JOIN (
+    SELECT
+        to_station_id,
+        COUNT(to_station_id) AS num_arrivals
+    FROM trips
+    GROUP BY to_station_id
+) AS ts ON t.from_station_id = ts.to_station_id, parameters: None
+[2022-05-31 01:19:42,270] {postgres.py:71} INFO - INFO:  Table "station_traffic" does not exist and will be skipped
+
+[2022-05-31 01:19:42,289] {taskinstance.py:1280} INFO - Marking task as SUCCESS. dag_id=lesson1.exercise6, task_id=calculate_location_traffic, execution_date=20220531T011930, start_date=20220531T011939, end_date=20220531T011942
+[2022-05-31 01:19:42,332] {local_task_job.py:154} INFO - Task exited with return code 0
+[2022-05-31 01:19:42,359] {local_task_job.py:264} INFO - 0 downstream tasks scheduled from follow-on schedule check

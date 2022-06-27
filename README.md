@@ -24,8 +24,6 @@ This project aims to build an ETL for bike share company to identify our most hi
 *   In Airflow-Web go to s3_to_redshift dag unpaused dag and trigger dag
 The data modeling chosen was the star schema. Among the main advantages we can mention: good response time, script run time, flexibility in the model, low complexity in the model.
 
-![](/home/workspace/schema.png)
-
 ## Airflow DAG
 
 <img src="images/dag.png" width="500" height = "300" align="center">
